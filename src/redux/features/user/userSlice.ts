@@ -9,7 +9,7 @@ const initialState: DataState = {
     isError: false,
     errorMsg: "",
     users: [],
-    singleUser: []
+    singleUser: null
 };
 
 
@@ -32,7 +32,7 @@ export const fetchRegisteredUsers = createAsyncThunk(
 // getSingleUser
 export const getSingleUser = createAsyncThunk(
     'user/getSingleUser',
-    async(userId, thunkAPI) => {
+    async(userId: number, thunkAPI) => {
         try {
             return await userService.getSingleUser(userId)
         }catch(error){
@@ -73,7 +73,7 @@ const userSlice = createSlice({
         .addCase(getSingleUser.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(getSingleUser.fulfilled, (state, {payload}:PayloadAction<UserState[]>) => {
+        .addCase(getSingleUser.fulfilled, (state, {payload}:PayloadAction<UserState>) => {
             state.isLoading = false;
             state.singleUser = payload;
             console.log(state.singleUser)

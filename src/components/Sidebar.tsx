@@ -1,5 +1,6 @@
 'use client'
-import { useState,React } from "react";
+import React from 'react'
+import {useState} from "react";
 import { usePathname } from "next/navigation"; // For active state checking
 import { FaChevronDown, FaChevronUp } from "react-icons/fa"; // Example icons
 import Image from "next/image";
@@ -7,49 +8,58 @@ import Logo from '@/shared/Logo'
 import icon1 from '../../public/assets/dashboardIcon.png'
 import icon2 from '../../public/assets/orderIcon.png'
 import icon3 from '../../public/assets/wallet-02.png'
-import icon4 from '../../public/assets/store-03.png'
 import icon5 from '../../public/assets/user-group.png'
 import { FaRegCircleUser } from "react-icons/fa6";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 
 
-const menuItems = [
-  {
-    label: "Dashboard",
-    path: "/",
-    icon: <Image src={icon1} alt='image'/>,
-  },
-  {
-    label: "Order Management",
-    children: [
-        { label: 'Digital Product', path: '/' },
-        { label: 'Physical Product', path: '/' },
-      ],
-      icon: <Image src={icon2} alt='image'/>
-  },
-  {
-    label: 'Wallet', 
-    path: '/', 
-    icon: <Image src={icon3} alt='image'/>
-  },
-  {   label: 'Assets Management', 
-    path: '/',
-    icon: <Image src={icon4} alt='image'/> },
-{
-    label: 'Account Management',
-    children: [
-      { label: 'Customer Management', path: '/dashboard/account_settings' },
-      { label: 'Contributor Management', path: '/dashboard/account_settings/contributor' },
-      { label: 'Vendor Management', path: '/dashboard/account_settings/vendor' },
-    ],
-    icon: <Image src={icon5} alt='image'/>
-  },
-];
+
 
 export default function Sidebar() {
   const pathname = usePathname(); 
   const [openMenus, setOpenMenus] = useState<string[]>([]);
 
+
+  const menuItems = [
+    {
+      label: "Dashboard",
+      path: "/",
+      icon: <Image src={icon1} alt='image'/>,
+    },
+    {
+      label: "Order Management",
+      children: [
+          { label: 'Frame', path: '/dashboard/orders/frame' },
+          { label: 'Canvas', path: '/dashboard/orders/canvas' },
+          { label: 'Assets', path: '/dashboard/orders/asset' },
+        ],
+        icon: <Image src={icon2} alt='image'/>
+    },
+    {
+      label: 'Wallet', 
+      path: '/dashboard/wallet', 
+      icon: <Image src={icon3} alt='image'/>
+    },
+    {
+      label: "Assets Management",
+      children: [
+          { label: 'Upload Request', path: '/dashboard/assets_management/upload_request' },
+          { label: 'Product Category', path: '/dashboard/assets_management/upload_request' },
+          { label: 'Frames', path: '/dashboard/assets_management/upload_request' },
+          { label: 'Merchandise', path: '/dashboard/assets_management/upload_request' },
+        ],
+        icon: <Image src={icon2} alt='image'/>
+    },
+  {
+      label: 'Account Management',
+      children: [
+        { label: 'Customer Management', path: '/dashboard/account_settings' },
+        { label: 'Contributor Management', path: '/dashboard/account_settings/contributor' },
+        { label: 'Vendor Management', path: '/dashboard/account_settings/vendor' },
+      ],
+      icon: <Image src={icon5} alt='image'/>
+    },
+  ];
   
   const toggleSubmenu = (label: string) => {
     setOpenMenus((prev) =>
@@ -76,7 +86,7 @@ export default function Sidebar() {
                     // Single-level menu item
                     <a
                     href={item.path}
-                    className={`flex items-center p-2 rounded hover:bg-gray-100/40 hover:shadow ${
+                    className={`flex items-center p-2 rounded hover:bg-[#EAEAEA] hover:text-black hover:shadow transition-all duration-300 ${
                         isActive(item.path) ? "bg-gray-700" : ""
                     }`}
                     >
@@ -88,7 +98,7 @@ export default function Sidebar() {
                     <div className="">
                     <button
                         onClick={() => toggleSubmenu(item.label)}
-                        className="flex items-center w-full p-2 rounded hover:bg-gray-100/40 hover:shadow"
+                        className="flex items-center w-full p-2 rounded hover:bg-[#EAEAEA] hover:text-black hover:shadow transition-all duration-300"
                     >
                         <span className="mr-3">{item.icon}</span>
                         <span className="text-base">{item.label}</span>
@@ -104,7 +114,7 @@ export default function Sidebar() {
                             <a
                             key={subItem.label}
                             href={subItem.path}
-                            className={`block p-2 rounded hover:bg-gray-100/40 hover:shadow ${
+                            className={`block p-2 rounded hover:bg-[#EAEAEA] hover:text-black hover:shadow transition-all duration-300 ${
                                 isActive(subItem.path) ? "#EAEAEA" : ""
                             }`}
                             >
