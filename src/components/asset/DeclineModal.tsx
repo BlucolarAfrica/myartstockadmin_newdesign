@@ -88,7 +88,7 @@ const DeclineModal = ({onClose, item}: ModalProps) => {
         <div>
             {
                 notify && (
-                    <div className='fixed inset-0 transition-all flex items-center justify-center bg-black bg-opacity-50 z-[99]'>
+                    <div className='fixed inset-0 transition-all flex items-center justify-center bg-black bg-opacity-50 z-[999]'>
                         <div className='bg-white rounded-lg shadow-lg w-1/4 h-[350px] p-6 relative flex justify-center items-'>
                             <ul className='text-center flex flex-col justify-around'>
                                 <li><Image src={successIcon} alt='image'  /></li>

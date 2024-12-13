@@ -123,7 +123,7 @@ const Page = () => {
                                 <td className='py-2 px-4 border-b relative'>
                                     <BsThreeDotsVertical onClick={ () => toggleMenu(user.id)}  className='cursor-pointer'/>
                                     {viewMoreBtn === user.id && (
-                                        <div className="absolute right-5 mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333]">
+                                        <div className="absolute right-5 mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333]" onClick={ () => toggleMenu(user.id)}>
                                             <ul className="p-2 text-xs">
                                                 <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer">
                                                     <Link href={`/dashboard/account_settings/contributor/${user.id}`}>View More</Link>

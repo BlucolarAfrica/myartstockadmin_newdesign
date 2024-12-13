@@ -139,7 +139,7 @@ const Page = () => {
                                 <td className='py-2 px-4 border-b relative'>
                                     <BsThreeDotsVertical onClick={ () => toggleMenu(item.id)}  className='cursor-pointer'/>
                                     {viewMoreBtn === item.id && (
-                                        <Link href={`/dashboard/orders/frame/${item.id}`} className="absolute right-16 mt-2 w-32 border bg-white shadow-lg rounded-lg z-10 text-[#333333]">
+                                        <Link href={`/dashboard/orders/frame/${item.id}`} onMouseLeave={ () => toggleMenu(item.id)}  className="absolute right-16 mt-2 w-32 border bg-white shadow-lg rounded-lg z-10 text-[#333333]">
                                             <ul className="p-2 text-xs">
                                                 <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer">
                                                     View Order

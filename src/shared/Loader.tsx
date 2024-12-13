@@ -1,18 +1,15 @@
+import Image from 'next/image'
 import React from 'react'
-import { TbLoader3} from 'react-icons/tb'
+import loaderIcon from '../../public/assets/loadergif.gif'
 
 const Loader = () => {
   return (
     <div className='flex h-screen justify-center items-center'>
-        {/* <span className='animate-spin'>
-            <TbLoaderQuarter size={20} className='animate-spin' />
-        </span> */}
-        {/* Please Wait... */}
-        <div>
-          <TbLoader3 size={30} className={`animate-spin`}/>
+        <div className='h-20 w-20 overflow-hidden'>
+           <Image src={loaderIcon} alt='image' width={10} height={10} className='h-full w-full' />
         </div>
     </div>
   )
 }
 
-export default Loader
+export default Loader;

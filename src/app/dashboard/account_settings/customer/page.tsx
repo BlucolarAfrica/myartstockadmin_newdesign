@@ -7,8 +7,6 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import { CiSearch } from 'react-icons/ci'
 import { LuFilter } from 'react-icons/lu';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import profileImage from '../../../../../public/assets/profile-image.png'
-import Image from 'next/image'
 import Link from 'next/link'
 import Loader from '@/shared/Loader'
 
@@ -114,16 +112,16 @@ const Page = () => {
                         return (
                             <tr key={user.id} className='hover:bg-gray-50 text-[#333333] font-normal text-xs'>
                                 <td className='py-2 px-4 border-b'>{index + 1}</td>
-                                <td className='py-2 px-4 border-b flex items-center'>{user.profile_image? `${user.profile_image}` : <Image src={profileImage}   alt='image' className='rounded-full w-10 h-10 object-cover' quality={100} />}</td>
+                                <td className='py-2 px-4 border-b flex items-center'>{user.profile_image?? "null"}</td>
                                 <td className='py-2 px-4 border-b'>{user.first_name} {user.last_name}</td>
                                 <td className='py-2 px-4 border-b'>{user.gender ? user.gender : "null"}</td>
                                 <td className='py-2 px-4 border-b'>{truncateText(user.email, 10)}</td>
                                 <td className='py-2 px-4 border-b'>{user.phone_number ? user.phone_number : "null"}</td>
                                 <td className='py-2 px-4 border-b'>{user.is_active === true? <span className='bg-[#06D6A00D] rounded-lg px-2 py-1 text-xs text-[#2F4858]'>Active</span> : <span className='bg-[#F99E0B40] text-orange rounded-lg px-2 py-1 text-xs text-[#F99E0B]'>In-Active</span> }</td>
                                 <td className='py-2 px-4 border-b relative'>
-                                    <BsThreeDotsVertical onClick={ () => toggleMenu(user.id)}  className='cursor-pointer'/>
+                                    <BsThreeDotsVertical onClick={ () => toggleMenu(user.id)} onMouseEnter={ () => toggleMenu(user.id)} className='cursor-pointer'/>
                                     {viewMoreBtn === user.id && (
-                                        <div className="absolute right-5 mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333]">
+                                        <div className="absolute right-20 top-4 border mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333]" onMouseLeave={() => toggleMenu(user.id)} >
                                             <ul className="p-2 text-xs">
                                                 <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer">
                                                     <Link href={`/dashboard/account_settings/customer/${user.id}`}>View More</Link>

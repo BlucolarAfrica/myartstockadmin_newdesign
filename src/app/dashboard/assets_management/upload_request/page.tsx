@@ -193,9 +193,9 @@ const Page = () => {
                                             <td className='py-3 px-4 border-b'>{new Date(item?.updated_at).toLocaleDateString()}</td>
                                             <td className='py-3 px-4 border-b flex items-center text-[#FFC107] text-xs'><PiRadioButtonFill />{item?.status }</td>
                                             <td className='py-2 px-4 border-b relative'>
-                                                 <BsThreeDotsVertical onClick={ () => toggleMenu(item.id)}  className='cursor-pointer'/>
+                                                 <BsThreeDotsVertical onClick={ () => toggleMenu(item.id)} onMouseEnter={ () => toggleMenu(item.id)}  className='cursor-pointer'/>
                                                 {viewMoreBtn === item.id && (
-                                                    <div className="absolute right-5 mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333]"> 
+                                                    <div className="absolute right-24 top-4 mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333]" onClick={ () => toggleMenu(item.id)}  onMouseLeave={ () => toggleMenu(item.id)} > 
                                                         <ul className="p-2 text-xs">
                                                             <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer">
                                                                 <button onClick={() => handleModalDetails(item)}>View Details</button>
@@ -257,7 +257,7 @@ const Page = () => {
             )}
             {activeTab === 'approved' && (
                 <div>
-                <div className='overflow-x-auto'>
+                    <div className='overflow-x-auto'>
                      <table className='min-w-full bg-white border border-gray-200/40'>
                          <thead>
                              <tr className="bg-gray-100/40 text-[#C3C3C3] font-semibold text-xs">
@@ -287,10 +287,10 @@ const Page = () => {
                                          <td className='py-3 px-4 border-b'>{new Date(item?.updated_at).toLocaleDateString()}</td>
                                          <td className='py-3 px-4 border-b flex items-center text-green-500 text-xs'><PiRadioButtonFill />{item?.status }</td>
                                          <td className='py-2 px-4 border-b relative'>
-                                              <BsThreeDotsVertical onClick={ () => toggleMenu(item.id)}  className='cursor-pointer'/>
+                                              <BsThreeDotsVertical onClick={ () => toggleMenu(item.id)} onMouseEnter={ () => toggleMenu(item.id)}  className='cursor-pointer'/>
                                              {viewMoreBtn === item.id && (
                                                 <>
-                                                    <div className="absolute right-5 mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333]"> 
+                                                    <div className="absolute right-24 top-4 mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333]" onClick={ () => toggleMenu(item.id)}  onMouseLeave={ () => toggleMenu(item.id)}> 
                                                         <ul className="p-2 text-xs">
                                                             <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer">
                                                                 <button onClick={() => handleModalDetails(item)}>View Details</button>
@@ -378,7 +378,7 @@ const Page = () => {
                              <ApprovedModal item={selectedItem} onClose={handleCloseModal}/>
                          )}
                      </div>
-                 </div>
+                    </div>
                 </div>
             )}
             {activeTab === 'declined' && (
@@ -414,9 +414,9 @@ const Page = () => {
                                          <td className='py-3 px-4 border-b'>{new Date(item?.updated_at).toLocaleDateString()}</td>
                                          <td className='py-3 px-4 border-b flex items-center text-red-500 text-xs'><PiRadioButtonFill />{item?.status }</td>
                                          <td className='py-2 px-4 border-b relative'>
-                                              <BsThreeDotsVertical onClick={ () => toggleMenu(item.id)}  className='cursor-pointer'/>
+                                              <BsThreeDotsVertical onClick={ () => toggleMenu(item.id)} onMouseEnter={() => toggleMenu(item.id)}  className='cursor-pointer'/>
                                              {viewMoreBtn === item.id && (
-                                                 <div className="absolute right-5 mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333]"> 
+                                                 <div className="absolute right-24 top-4 mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333] border" onClick={ () => toggleMenu(item.id)}  onMouseLeave={ () => toggleMenu(item.id)}> 
                                                      <ul className="p-2 text-xs">
                                                          <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer">
                                                              <button onClick={() => handleModalDetails(item)}>View Details</button>

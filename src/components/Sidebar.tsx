@@ -44,9 +44,9 @@ export default function Sidebar() {
       label: "Assets Management",
       children: [
           { label: 'Upload Request', path: '/dashboard/assets_management/upload_request' },
-          { label: 'Product Category', path: '/dashboard/assets_management/upload_request' },
-          { label: 'Frames', path: '/dashboard/assets_management/upload_request' },
-          { label: 'Merchandise', path: '/dashboard/assets_management/upload_request' },
+          { label: 'Product Category', path: '/dashboard/assets_management/categories' },
+          // { label: 'Frames', path: '/dashboard/assets_management/upload_request' },
+          // { label: 'Merchandise', path: '/dashboard/assets_management/upload_request' },
         ],
         icon: <Image src={icon2} alt='image'/>
     },
@@ -75,10 +75,12 @@ export default function Sidebar() {
     children.some((child) => isActive(child.path));
 
   return (
-    <div className="w-[350px]">
-      <nav className="flex flex-col justify-between text-[#818181] text-base p-4 border shadow h-screen ">
+    <div className=" bg-white fixed w-72 h-screen">
+      <nav className="flex flex-col justify-between text-[#818181] text-base p-4 border shadow h-screen overflow-y-auto no-scrollbar">
         <div>
+          <div className='sticky top-0 bg-white'>
             <Logo/>
+          </div>
             <div className="pt-8">
             {menuItems.map((item) => (
                 <div key={item.label} className="mb-2">

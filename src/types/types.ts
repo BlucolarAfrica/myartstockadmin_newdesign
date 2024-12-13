@@ -74,6 +74,9 @@ export interface ContributorProps {
         total_content_download: number
         total_amount_spent: number
     };
+    contributor:{
+        id: number
+    }
 }
 
 export interface ContributorState {
@@ -169,11 +172,24 @@ export interface AssetProps {
     }
 }
 
+export interface AssetCategoriesProps {
+    id: number;
+    title: string;
+    slug?: string;
+    description?: string;
+    asset_type: string;
+    price?: number;
+    is_active?: boolean;
+    cover_image?: string
+}
+
 export interface AssetState {
     isLoading: boolean,
     isError?: boolean,
-    assets: AssetProps[],
-    assetsDetail: AssetProps | null
     errorMsg?: string,
+    assets: AssetProps[],
+    assetsDetail: AssetProps | null,
+    categories: AssetCategoriesProps[],
+    deleteMsg: string
 }
 

@@ -49,7 +49,7 @@ const Page = ({params}: {params: Promise<{ id: number }>}) => {
         setSelectedItem(null);
     };
 
-     const handleAssignModal = (param: Record<string, any>,param2: Record<string, any>) =>{
+    const handleAssignModal = (param: Record<string, any>,param2: Record<string, any>) =>{
         setSelectedItem(param)
         setAllData(param2)
         setAssignVendorModal(true)
@@ -154,7 +154,7 @@ const Page = ({params}: {params: Promise<{ id: number }>}) => {
                             <td className='py-2 px-4 border-b relative'>
                                 <BsThreeDotsVertical onClick={ () => toggleMenu(item.id)}  className='cursor-pointer'/>
                                 {viewMoreBtn === item.id && (
-                                    <div className="absolute right-24 top-2 mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333] border" onClick={() => toggleMenu(item.id)} onMouseLeave={() => toggleMenu(item.id)}>
+                                    <div className="absolute right-16 mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333] border" onClick={() => toggleMenu(item.id)}  onMouseLeave={() => toggleMenu(item.id)}>
                                         <ul className="p-2 text-xs" >
                                             <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleViewDetail(item, data)}>View Detail</li>
                                             {/* <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer">Update Status</li> */}
@@ -177,7 +177,7 @@ const Page = ({params}: {params: Promise<{ id: number }>}) => {
         {/* update order status modal */}
         {/* {updateStatusModal && (<UpdateStatus item={selectedItem} onClose={handleCloseStatusModal}/> )} */}
 
-        {/* assign vendor*/}
+        {/* assign */}
         { assignVendorModal && (
             <AssignVendorModal item={selectedItem} result={allData} onClose={handleCloseAssignModal}/>
         )}

@@ -123,4 +123,4 @@ const ContributorDetailsLayout = ({children, params}: {children: React.ReactNode
   )
 }
 
-export default ContributorDetailsLayout
+export default ContributorDetailsLayout;

@@ -68,7 +68,7 @@ export const updateOrderStatus = createAsyncThunk(
 //update_status
 export const assignVendor = createAsyncThunk(
     'orders/assignVendor',
-    async({vendor_id, order_id, due_date,}: { vendor_id: number; order_id: number, due_date:string}, thunkAPI) => {
+    async({vendor_id, order_id, due_date,}: { vendor_id?: number | null; order_id: number, due_date:string}, thunkAPI) => {
         try {
             const response = await axiosInstance.post(`/admin/orders/${order_id}/assign-vendor`, {vendor_id, order_id, due_date})
             console.log(response.data.data)

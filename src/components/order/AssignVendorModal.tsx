@@ -1,44 +1,74 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
+import { assignVendor } from '@/redux/features/orders/orderSlice';
 import { fetchVendors } from '@/redux/features/vendor/vendorSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import Loader from '@/shared/Loader';
 import { highlightMatch, truncateText } from '@/utils/utils';
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import { CiSearch } from 'react-icons/ci';
 import { IoCloseCircleOutline } from 'react-icons/io5'
 import { LuFilter } from 'react-icons/lu';
+import successIcon from '../../../public/assets/success notice.png'
 
 interface ItemProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     item: Record<string, any> | null;
+    result: Record<string, any> | null;
     onClose: () => void;
 };
 
-const AssignVendorModal = ({onClose, item}: ItemProps) => {
+const AssignVendorModal = ({onClose, item, result}: ItemProps) => {
     const {isLoading, isError, vendors:data, errorMsg} = useAppSelector(state => state.vendor);
     const dispatch = useAppDispatch();
     const [searchQuery, setSearchQuery] = useState("");
     const [durationModal, setDurationModal]  = useState(false)
-    // const [notify, setNotify] = useState(false);
-    const [duration, setDuration] = useState("")
+    const [notify, setNotify] = useState(false);
+    const [duration, setDuration] = useState(result?.due_date || "")
     const [selectedVendorId, setSelectedVendorId] = useState<number | null>(null);
     const [error, setError] = useState("")
-    console.log(item);
+    // const [vendorName] = useState()
 
+    // const VendorName = data.find((user) => user.personnel_name)
+    
+    console.log(result);
+    console.log(item)
+    
     useEffect(() => {
         dispatch(fetchVendors())
     },[dispatch])
+
+    // Get today's date in "YYYY-MM-DD" format
+    const getTodayDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
   
 
     const handleSubmit = () => {
-      if (selectedVendorId !== null) {
-        const selectedUser = data.find((user) => user.id === selectedVendorId);
-        setDurationModal(true)
-        console.log("Selected User:", selectedUser);
-      } else {
-        setError("Please select a vendor.");
-      }
+        if (selectedVendorId !== null) {
+            const selectedUser = data.find((user) => user.id === selectedVendorId);
+            setDurationModal(true)
+            console.log("Selected User:", selectedUser);
+        } else {
+            setError("Please select a vendor.");
+        }
     };
+
+    const handleAssignSubmit = (vendor_id:number, order_id:number, due_date:string ) => {
+        dispatch(assignVendor({vendor_id, order_id, due_date}))
+        setNotify(true)
+        onClose()
+        alert(`Order Assigned Successfully`)
+        // console.log("duration", duration)
+        // console.log("vendor_id",selectedVendorId)
+    }
+
+    
 
     if(isLoading){
         return <Loader/>  
@@ -125,8 +155,7 @@ const AssignVendorModal = ({onClose, item}: ItemProps) => {
                 <div className='items-center justify-center text-white gap-4 flex py-5'>
                     <button className='bg-[#D7D7D7] py-3 px-5 rounded cursor-not-allowed'>Cancel</button>
                     <button
-                        onClick={handleSubmit}
-                        // disabled={selectedVendorId === null}
+                        onClick={handleSubmit}  
                         className={`bg-[#2F4858] text-white p-3 px-10 rounded-lg ${selectedVendorId ? 'bg-[#2F4858]' : 'bg-[#2F4858]/60 cursor-not-allowed' }`}
                         >Next
                     </button>
@@ -134,7 +163,7 @@ const AssignVendorModal = ({onClose, item}: ItemProps) => {
             </div>
         </div>
 
-        {/* decline modal */}
+        {/* set duration modal */}
         {durationModal && (
         <div className='fixed inset-0 transition-all flex items-center justify-center bg-black bg-opacity-50 z-[99]'>
             <div className='bg-white rounded-lg shadow-lg w-1/3 h-[50%] p-6 relative '>
@@ -142,17 +171,25 @@ const AssignVendorModal = ({onClose, item}: ItemProps) => {
                 <div className='flex flex-col h-full justify-around items-center py-10'>
                     <p className='pb-5 font-bold text-[#333333] text-2xl'>Set Duration</p>
                     <p className='text-[#333333] text-lg items-start w-full flex justify-start'>Set a duration for vendor to fulfill order</p>
-                    <select value={duration} id="update" required onChange={(e) => setDuration(e.target.value)} className='py-3 px-2 w-full border rounded'>
-                        <option value="10">10 day</option>
-                        <option value="9">9 day</option>
-                        <option value="8">8 day</option>
-                        <option value="7">7 day</option>
-                    </select>
+                    <input 
+                        type="date"
+                        name="date"
+                        min={getTodayDate()} 
+                        value={duration}
+                        onChange={(e) => setDuration(e.target.value)} 
+                        required
+                        className='border w-full p-3 rounded'
+                    />
                     <div className='gap-4 flex pt-5'>
                         <button 
-                           onClick={handleSubmit}
-                           disabled={selectedVendorId === null}
-                            className={`bg-[#2F4858] text-white p-3 px-10 rounded-lg `}
+                           onClick={() =>
+                            {
+                                handleAssignSubmit(selectedVendorId, result?.id, duration)
+                                setNotify(true)
+                            }
+                            }
+                           disabled={!duration}
+                            className={`bg-[#2F4858] text-white p-3 px-10 rounded-lg ${!duration ? "cursor-not-allowed": "cursor-pointer"}`}
                             >
                                 Assign
                         </button>
@@ -161,6 +198,34 @@ const AssignVendorModal = ({onClose, item}: ItemProps) => {
             </div>
         </div>
         )}
+
+        {/* done notification */}
+        <div>
+            {
+                notify && (
+                    <div className='fixed inset-0 transition-all flex items-center justify-center bg-black bg-opacity-50 z-[99]'>
+                        <div className='bg-white rounded-lg shadow-lg w-1/4 h-[350px] p-6 relative flex justify-center items-'>
+                            <ul className='text-center flex flex-col justify-around'>
+                                <li><Image src={successIcon} alt='image'  /></li>
+                                <li>Order Assigned to {vendorName}</li>
+                                <li>
+                                    <button 
+                                        onClick={
+                                            () => {
+                                                onClose();
+                                            }} 
+                                            className='bg-[#2F4858] text-white p-4 w-full rounded'
+                                            >
+                                        Done
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                )
+            }
+        </div>
     </div>
   )
 }
