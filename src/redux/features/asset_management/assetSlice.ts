@@ -1,4 +1,4 @@
-import {AssetCategoriesProps, AssetProps, AssetState } from '../../../types/types';
+import {AssetCategoriesProps, AssetFrameProps, AssetProps, AssetState } from '../../../types/types';
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import assetService from './assetService';
 import axiosInstance from '@/utils/utils';
@@ -12,7 +12,9 @@ const initialState: AssetState = {
     assets: [],
     assetsDetail: null,
     categories: [],
-    deleteMsg: ''
+    deleteMsg: '',
+    frames: [],
+    updateFrameStatusMsg: ''
 };
 
 
@@ -82,12 +84,46 @@ export const FetchCategories = createAsyncThunk(
     }
 );
 
+
+//categories
+export const FetchFrames = createAsyncThunk(
+    'assets/fetchFrames',
+    async(_, thunkAPI) => {
+        try {
+            return await assetService.fetchFrames()
+        }catch(error){
+            if (error instanceof Error) {  
+                return thunkAPI.rejectWithValue(error.message);
+            } else {
+            console.error("An unknown error occurred");
+            }
+        }
+    }
+);
+
 //DeleteCategory
 export const DeleteCategory = createAsyncThunk(
     'asset/deleteCategory',
     async(id: number, thunkAPI) => {
         try {
             return await assetService.deleteCategory(id)
+        }catch(error){
+            if (error instanceof Error) {  
+                return thunkAPI.rejectWithValue(error.message);
+            } else {
+            console.error("An unknown error occurred");
+            }
+        }
+    }
+);
+
+
+//DeleteCategory
+export const UpdateFrameStatus = createAsyncThunk(
+    'asset/updateFrameStatus',
+    async(id: number, thunkAPI) => {
+        try {
+            return await assetService.updateFrameStatus(id)
         }catch(error){
             if (error instanceof Error) {  
                 return thunkAPI.rejectWithValue(error.message);
@@ -182,6 +218,23 @@ const assetSlice = createSlice({
             console.log(state.errorMsg)
         })
 
+        // fetchCategories
+        .addCase(FetchFrames.pending, (state) => {
+            state.isLoading = true;
+            state.isError = false;
+            state.errorMsg = "";
+        })
+        .addCase(FetchFrames.fulfilled, (state, {payload}:PayloadAction<AssetFrameProps[]>) => {
+            state.isLoading = false;
+            state.frames = payload;
+            console.log(payload)
+        })
+        .addCase(FetchFrames.rejected, (state, {payload}:PayloadAction<unknown>) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.errorMsg = payload as string;
+            console.log(state.errorMsg)
+        })
 
          // delete Category
          .addCase(DeleteCategory.pending, (state) => {
@@ -195,6 +248,24 @@ const assetSlice = createSlice({
             console.log(payload)
         })
         .addCase(DeleteCategory.rejected, (state, {payload}:PayloadAction<unknown>) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.errorMsg = payload as string;
+            console.log(state.errorMsg)
+        })
+
+         // update frame status
+         .addCase(UpdateFrameStatus.pending, (state) => {
+            state.isLoading = true;
+            state.isError = false;
+            state.errorMsg = "";
+        })
+        .addCase(UpdateFrameStatus.fulfilled, (state, {payload}:PayloadAction<string>) => {
+            state.isLoading = false;
+            state.updateFrameStatusMsg = payload;
+            console.log(payload)
+        })
+        .addCase(UpdateFrameStatus.rejected, (state, {payload}:PayloadAction<unknown>) => {
             state.isLoading = false;
             state.isError = true;
             state.errorMsg = payload as string;

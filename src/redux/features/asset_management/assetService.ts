@@ -31,12 +31,24 @@ const deleteCategory = async(id: number) => {
     return response.data.message
 }
 
+// frames
+const fetchFrames = async() => {
+    const response = await axiosInstance.get(`/admin/frames`)
+    return response.data.data.data
+}
 
+// frames
+const updateFrameStatus = async(id: number) => {
+    const response = await axiosInstance.post(`/admin/frames/${id}/update-status`)
+    return response.data.message
+}
 const assetService = {
     fetchAssets,
     assetDetails,
     fetchCategories,
-    deleteCategory
+    deleteCategory,
+    fetchFrames,
+    updateFrameStatus
     // updateStatus
 };
 

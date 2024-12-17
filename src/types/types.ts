@@ -7,20 +7,74 @@ export interface AuthState {
     errorMsg: string
 }
 
+export interface orderHistory {
+    id: number;
+    status?: string;
+    delivery_fee: number;
+    sku?: string;
+    due_date: string;
+    date_assigned: string;
+    created_at: string
+    customer?: {
+        id: number,
+        first_name?: string,
+        last_name?: string,
+        email?: string,
+        phone_number?: string
+    };
+    items?: {
+        id: number,
+        category: string,
+        type: string,
+        quantity: string,
+        status: string,
+        purchase_price: string,
+        purchase_discount: number;
+        deliverable?: {
+            title: string,
+            slug: string,
+            description?: string
+        },  
+        assigned_to?: {
+            name?: string,
+            business_name: string;
+            personnel_name?: string,
+            type?: string
+        }
+    };
+    total_amount: number
+};
+
+export interface PersonalInformation {
+    personal_information: {
+        id: number; 
+        first_name: string;
+        last_name:string;
+        email: string;
+        phone_number: string;
+        gender?: string;
+        profile_image?: string;
+        status?: boolean;
+        referral_code: string;
+        date_of_birth?: null;
+        country: string;
+        created_at: string;
+        address?: string
+    };
+    orderHistory?: orderHistory[];
+    total_orders?: number;
+    total_amount_spent?: number;
+}
 
 export interface UserState {
-    id: number; 
-    first_name: string;
-    last_name:string;
-    email: string;
-    phone_number: string;
-    gender: string;
-    profile_image?: string;
-    is_active?: boolean;
-    orders: {
-        total_content_download: number
-        total_amount_spent: number
-    };
+        id: number; 
+        first_name: string;
+        last_name:string;
+        email: string;
+        phone_number: string;
+        gender?: string;
+        profile_image?: string;
+        status?: boolean;
 }
 
 export interface DataState {
@@ -28,9 +82,15 @@ export interface DataState {
     isError?: boolean,
     users: UserState[],
     errorMsg?: string,
-    singleUser: UserState | null
+    singleUser:  PersonalInformation| null
 }
 
+export interface withdrawal_history {
+    id: number
+    amount: number,
+    status: string,
+    created_at: string
+}
 
 export interface VendorProps {
     id: number,
@@ -39,14 +99,30 @@ export interface VendorProps {
     phone_number?: string,
     country?: string,
     status?: string,
-    personnel_name: string
-    type?: string
+    gender?: string,
+    date_of_birth: string,
+    created_at:string,
+    personnel_name: string;
+    profile_image: string;
+    type?: string;
+    state?: string;
+    city?:string,
     is_active?: boolean;
     orders?: {
         total_content_download: number
         total_amount_spent: number
     };
+    other_details?: {
+        order_items: [],
+        total_completed_order: number;
+        total_processing_orders: number;
+        total_pending_orders: number;
+        wallet_ballance: string;
+        witdrawals_history: withdrawal_history[];
+        payments_history: []
+    } 
 }
+
 
 export interface VendorState {
     isLoading: boolean,
@@ -183,6 +259,18 @@ export interface AssetCategoriesProps {
     cover_image?: string
 }
 
+export interface AssetFrameProps {
+    id: number;
+    title: string;
+    slug?: string;
+    description?: string;
+    image_url: string;
+    type?: string;
+    price?: number;
+    is_active?: boolean;
+    // cover_image?: string
+}
+
 export interface AssetState {
     isLoading: boolean,
     isError?: boolean,
@@ -190,6 +278,8 @@ export interface AssetState {
     assets: AssetProps[],
     assetsDetail: AssetProps | null,
     categories: AssetCategoriesProps[],
-    deleteMsg: string
+    deleteMsg: string;
+    frames: AssetFrameProps[],
+    updateFrameStatusMsg: string
 }
 
