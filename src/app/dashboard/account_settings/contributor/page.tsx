@@ -1,17 +1,16 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { truncateText } from '@/utils/utils'
+import { highlightMatch, truncateText } from '@/utils/utils'
 import React, { useEffect, useState } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { CiSearch } from 'react-icons/ci'
 import { LuFilter } from 'react-icons/lu';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import profileImage from '../../../../../public/assets/profile-image.png'
-import Image from 'next/image'
 import Link from 'next/link'
 import Loader from '@/shared/Loader'
 import { fetchContributor } from '@/redux/features/contributor/contributorSlice'
+import { useRouter } from 'next/navigation'
 
 const Page = () => {
     const {isLoading, isError, contributors:data, errorMsg} = useAppSelector(state => state.contributor);
@@ -20,8 +19,7 @@ const Page = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
-
-    console.log(data)
+    const router = useRouter()
 
     
     const toggleMenu = (id: number) => {
@@ -57,12 +55,16 @@ const Page = () => {
     };
 
 
+    // console.log(displayData);
+
     // Filtered Data
     const filteredData = displayData.filter((item) =>
-        item.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchQuery.toLowerCase())
+       item?.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        // item?.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item?.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    // console.log(filteredData)
 
     const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = Math.max(1, Math.min(100, Number(event.target.value)));
@@ -108,20 +110,20 @@ const Page = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    { !filteredData && !isLoading?
-                    <tr className='py-5 font-bold text-[#333333]'>
+                    { !filteredData.length && !isLoading?
+                    <tr className='py-5 font-bold text-[#333333] '>
                         <td className='py-4 px-4 text-center'>No matching data found</td>
                     </tr> 
                     :
                     filteredData.map((user, index) => {
                         return (
-                            <tr key={user.id} className='hover:bg-gray-50 text-[#333333] font-normal text-xs'>
+                            <tr key={user.id} className='hover:bg-gray-50 text-[#333333] font-normal text-xs cursor-pointer' onClick={() => router.push(`/dashboard/account_settings/contributor/${user.contributor.id}`)}>
                                 <td className='py-2 px-4 border-b'>{index + 1}</td>
                                 <td className='py-2 px-4 border-b flex items-center'>{<img src={user.profile_image ?? "null" } alt={"image"} className='h-10 w-10 rounded-full'/>} </td>
-                                <td className='py-2 px-4 border-b'>{user.first_name} {user.last_name}</td>
-                                <td className='py-2 px-4 border-b'>{user.gender ? user.gender : "null"}</td>
+                                <td className='py-2 px-4 border-b'>{highlightMatch(user.first_name, searchQuery) } {highlightMatch(user.last_name, searchQuery) }</td>
+                                <td className='py-2 px-4 border-b'>{user.gender ??  "null"}</td>
                                 <td className='py-2 px-4 border-b'>{truncateText(user.email, 10)}</td>
-                                <td className='py-2 px-4 border-b'>{user.phone_number ? user.phone_number : "null"}</td>
+                                <td className='py-2 px-4 border-b'>{user.phone_number ?? "null"}</td>
                                 <td className='py-2 px-4 border-b'>{user.is_active === true? <span className='bg-[#06D6A00D] rounded-lg px-2 py-1 text-xs text-[#2F4858]'>Active</span> : <span className='bg-[#F99E0B40] text-orange rounded-lg px-2 py-1 text-xs text-[#F99E0B]'>In-Active</span> }</td>
                                 <td className='py-2 px-4 border-b relative'>
                                     <BsThreeDotsVertical onClick={ () => toggleMenu(user.id)}  className='cursor-pointer'/>

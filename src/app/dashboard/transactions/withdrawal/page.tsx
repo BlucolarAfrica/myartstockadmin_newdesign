@@ -1,27 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-import ApprovedModal from '@/components/asset/AppprovedModal';
-import DeclineModal from '@/components/asset/DeclineModal';
-import PendingModal from '@/components/asset/PendingModal';
-import { FetchAssets, updateStatus } from '@/redux/features/asset_management/assetSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+// import ApprovedModal from '@/components/asset/AppprovedModal';
+// import DeclineModal from '@/components/asset/DeclineModal';
+// import PendingModal from '@/components/asset/PendingModal';
+// import { FetchAssets, updateStatus } from '@/redux/features/asset_management/assetSlice';
+import { useAppSelector } from '@/redux/hooks';
 import Loader from '@/shared/Loader';
-import Image from 'next/image';
+// import Image from 'next/image';
 import React, { useState } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { CiSearch } from 'react-icons/ci';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { LuFilter } from 'react-icons/lu';
-import { PiRadioButtonFill } from 'react-icons/pi';
+// import { CiSearch } from 'react-icons/ci';
+// import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+// import { LuFilter } from 'react-icons/lu';
+// import { PiRadioButtonFill } from 'react-icons/pi';
 import { TbCurrencyNaira } from 'react-icons/tb';
-import successIcon from '../../../../../public/assets/success notice.png'
-import { IoCloseCircleOutline } from 'react-icons/io5';
+// import successIcon from '../../../../../public/assets/success notice.png'
+// import { IoCloseCircleOutline } from 'react-icons/io5';
 import WithdrawalDetailsModal from '@/components/transactions/WithdrawalDetailsModal';
 
 
 const Page = () => {
-    const dispatch = useAppDispatch();
-    const {isLoading, isError, errorMsg, assets:data} = useAppSelector(state => state.assets)
+    // const dispatch = useAppDispatch();
+    const {isLoading, isError, errorMsg,} = useAppSelector(state => state.assets)
     const [activeTab, setActiveTab] = useState<string>('customer');
     const [modal, setModal] = useState(false)
     const [selectedItem, setSelectedItem] = useState<Record<string, any> | null>(null);

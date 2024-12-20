@@ -104,7 +104,7 @@ export interface VendorProps {
     created_at:string,
     personnel_name: string;
     profile_image: string;
-    type?: string;
+    type: string;
     state?: string;
     city?:string,
     is_active?: boolean;
@@ -123,6 +123,17 @@ export interface VendorProps {
     } 
 }
 
+export interface CreateVendor {
+    id?: number
+    business_name: string,
+    first_name: string,
+    last_name: string,
+    email: string,
+    phone_number: string,
+    personnel_name: string,
+    location: string,
+    type: string
+}
 
 export interface VendorState {
     isLoading: boolean,
@@ -130,28 +141,91 @@ export interface VendorState {
     vendors: VendorProps[],
     singleVendor: VendorProps | null,
     errorMsg?: string,
+    createVendor?: CreateVendor | null 
 }
 
+export interface ContributorDetailState {
+        id: number,
+        country?: string,
+        status?: string,
+        personnel_name?: string
+        type?: string
+        first_name: string;
+        last_name:string;
+        email: string;
+        phone_number: string;
+        gender: string;
+        profile_image?: string;
+        is_active?: boolean;
+        referral_code: string,
+        address: string,
+        date_of_birth: string,
+        created_at: string,
+        orders?: {
+            total_content_download: number
+            total_amount_spent: number
+        };
+        contributor:{
+            id: number
+            asset_type_of_interest: string,
+            profile_overview: string,
+            total_earnings: number,
+            available_balance: number,
+            status: string,
+            reason: string,
+            total_downloads: number,
+            user_type: string
+        },
+}
 
 export interface ContributorProps {
-    id: number,
-    country?: string,
-    status?: string,
-    personnel_name?: string
-    type?: string
-    first_name: string;
-    last_name:string;
-    email: string;
-    phone_number: string;
-    gender: string;
-    profile_image?: string;
-    is_active?: boolean;
-    orders?: {
-        total_content_download: number
-        total_amount_spent: number
-    };
-    contributor:{
-        id: number
+        id: number,
+        country?: string,
+        status?: string,
+        personnel_name?: string
+        type?: string
+        first_name: string;
+        last_name:string;
+        email: string;
+        phone_number: string;
+        gender: string;
+        profile_image?: string;
+        is_active?: boolean;
+        referral_code: string,
+        address: string,
+        date_of_birth: string,
+        created_at: string,
+        orders?: {
+            total_content_download: number
+            total_amount_spent: number
+        };
+        contributor:{
+            id: number
+            asset_type_of_interest: string,
+            profile_overview: string,
+            total_earnings: number,
+            available_balance: number,
+            status: string,
+            reason: string,
+            total_downloads: number,
+            user_type: string
+        },
+    user: ContributorDetailState,
+    metadata?: {
+        total_approved_assets: number,
+        total_pending_assets: number,
+        total_uploaded_assets: number,
+        total_downloads: number,
+        payouts: {
+                total_number_of_payouts: number,
+                total_payout_amount: number
+            },
+            histories: {
+                payment_history: [],
+                withdrawal_history: []
+            },
+            assets: [],
+            wallet: string
     }
 }
 

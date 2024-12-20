@@ -72,7 +72,7 @@ const VendorDetailsLayout = ({params}: {children: React.ReactNode; params: Promi
         {
             data ? (
                 <>
-                    <div className="flex items-center text-[#6D6D6D] text-sm"><MdArrowBackIosNew /> <span onClick={() => router.push('/dashboard/account_settings/vendor')} className="text-blue-600 cursor-pointer">Vendor Management</span>/{data?.personnel_name}</div>
+                    <div className="flex items-center text-[#6D6D6D] text-sm"><MdArrowBackIosNew /> <span onClick={() => router.back()} className="text-blue-600 cursor-pointer">Vendor Management</span>/{data?.personnel_name}</div>
                     <div className="flex justify-between pt-10">
                         <div className="flex gap-2">
                             <span className="h-32 w-32 border rounded overflow-hidden">
