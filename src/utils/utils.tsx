@@ -36,7 +36,7 @@ export const truncateText = (text: string, maxLength: number): string =>
    const parts = text.split(new RegExp(`(${query})`, "gi"));
        return parts.map((part, i) =>
        part.toLowerCase() === query.toLowerCase() ? (
-           <span key={i} className="bg-orange-300 text-white font-bold">
+           <span key={i} className="bg-red-500 text-white font-bold">
            {part}
            </span>
        ) : (

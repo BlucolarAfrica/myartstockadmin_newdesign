@@ -151,9 +151,9 @@ const Vendor = () => {
                 }
                 </tbody>
             </table>
-            <div className='flex justify-between items-center py-5 text-sm'>
+            <div className='flex justify-between items-center py-5 text-xs'>
                 <div>
-                    <label>
+                    <label className='text-xs font-bold'>
                         Show Rows:
                         <input
                         type="number"
@@ -162,7 +162,7 @@ const Vendor = () => {
                         value={rowsPerPage}
                         onChange={handleRowsPerPageChange}
                         style={{ width: "50px", marginLeft: "0.5rem" }}
-                        className='text-[#6D6D6D]'
+                        className='text-[#6D6D6D] font-bold'
                         />
                     </label>
                 </div>
@@ -171,7 +171,7 @@ const Vendor = () => {
                         <FaArrowLeft />
                         Previous
                     </button>
-                    <span>
+                    <span className='font-bold'>
                      {currentPage} 
                     </span>
                     <button onClick={handleNext} disabled={currentPage === totalPages} className={`flex items-center gap-1 bg-[#B20021] text-white p-3 rounded-lg ${currentPage === totalPages && 'bg-opacity-10'}`}>
@@ -179,9 +179,9 @@ const Vendor = () => {
                         <FaArrowRight />
                     </button>
                 </div>
-                <div>
-                    Showing {(currentPage - 1) * rowsPerPage + 1} to{" "}
-                    {Math.min(currentPage * rowsPerPage, totalRows)} of {totalRows} rows
+                <div className='text-xs'>
+                    Showing <b>{(currentPage - 1) * rowsPerPage + 1} </b> to{" "}
+                    <b>{Math.min(currentPage * rowsPerPage, totalRows)}</b> of <b>{totalRows}</b> rows
                 </div>
             </div>
         </div>

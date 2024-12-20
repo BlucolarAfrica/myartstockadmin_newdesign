@@ -1,4 +1,4 @@
-import { DataState, UserState } from '../../../types/types';
+import { DataState, PersonalInformation, UserState } from '../../../types/types';
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import userService from './userService';
 
@@ -73,7 +73,7 @@ const userSlice = createSlice({
         .addCase(getSingleUser.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(getSingleUser.fulfilled, (state, {payload}:PayloadAction<UserState>) => {
+        .addCase(getSingleUser.fulfilled, (state, {payload}:PayloadAction<PersonalInformation>) => {
             state.isLoading = false;
             state.singleUser = payload;
             console.log(state.singleUser)

@@ -11,6 +11,8 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import Link from 'next/link'
 import Loader from '@/shared/Loader'
 import UpdateStatus from '@/components/order/UpdateStatus';
+import { TbCurrencyNaira } from 'react-icons/tb';
+import { useRouter } from 'next/navigation';
 
 
 const Page = () => {
@@ -22,6 +24,7 @@ const Page = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [updateStatusModal, setUpdateStatusModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Record<string, any> | null>(null);
+  const router = useRouter()
 
 
     // const handleStatusUpdate = (param: Record<string, any>) =>{
@@ -113,7 +116,7 @@ const Page = () => {
                         <th className="py-4 px-4 text-left border-b">S/N</th>
                         <th className="py-4 px-4 text-left border-b">Order Number</th>
                         <th className="py-4 px-4 text-left border-b">Customer Name</th>
-                        <th className="py-4 px-4 text-left border-b">Amount</th>
+                        <th className="py-4 px-4 text-left border-b flex items-center">Amount(<TbCurrencyNaira />)</th>
                         <th className="py-4 px-4 text-left border-b">Date</th>
                         <th className="py-4 px-4 text-left border-b">Payment Type</th>
                         <th className="py-4 px-4 text-left border-b">Status</th>
@@ -128,20 +131,20 @@ const Page = () => {
                     : 
                     filteredData.map((item, index) => {
                         return (
-                            <tr key={item.id} className='hover:bg-gray-50 text-[#333333] font-normal text-xs'>
-                                <td className='py-2 px-4 border-b'>{index + 1}</td>
-                                <td className='py-2 px-4 border-b flex items-center text-[#5420A4]'>{item.sku}</td>
-                                <td className='py-2 px-4 border-b'>{item.customer?.first_name}</td>
-                                <td className='py-2 px-4 border-b text-[#5420A4]'>{item.total_amount?.toLocaleString()}</td>
-                                <td className='py-2 px-4 border-b'>{new Date(item?.created_at).toLocaleDateString()}</td>
-                                <td className='py-2 px-4 border-b'>{item.payment_type ?? "null"}</td>
-                                <td className='py-2 px-4 border-b'>{item.status}</td>
-                                <td className='py-2 px-4 border-b relative'>
-                                    <BsThreeDotsVertical onClick={ () => toggleMenu(item.id)}  className='cursor-pointer'/>
+                            <tr key={item.id} className='hover:bg-gray-50 text-[#333333] font-normal text-xs hover:cursor-pointer' onClick={() => router.push(`/dashboard/orders/asset/${item.id}`)}>
+                                <td className='py-4 px-4 border-b'>{index + 1}</td>
+                                <td className='py-4 px-4 border-b text-[#5420A4]'>{item.sku}</td>
+                                <td className='py-4 px-4 border-b'>{item.customer?.first_name}</td>
+                                <td className='py-4 px-4 border-b text-[#5420A4]'>{item.total_amount?.toLocaleString()}</td>
+                                <td className='py-4 px-4 border-b'>{new Date(item?.created_at).toLocaleDateString()}</td>
+                                <td className='py-4 px-4 border-b'>{item.payment_type ?? "null"}</td>
+                                <td className='py-4 px-4 border-b'>{item.status}</td>
+                                <td className='py-4 px-4 border-b relative'>
+                                    <BsThreeDotsVertical onClick={ () => toggleMenu(item.id)} onMouseEnter={ () => toggleMenu(item.id)}  className='hover:cursor-pointer'/>
                                     {viewMoreBtn === item.id && (
-                                        <Link href={`/dashboard/orders/asset/${item.id}`} onMouseLeave={ () => toggleMenu(item.id)} className="absolute right-16 mt-2 w-32 border bg-white shadow-lg rounded-lg z-10 text-[#333333]">
-                                            <ul className="p-2 text-xs">
-                                                <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer">
+                                        <Link href={`/dashboard/orders/asset/${item.id}`} onMouseLeave={ () => toggleMenu(item.id)} className="absolute right-14 top-3 mt-2 w-32 border bg-white shadow-lg rounded-lg z-10 text-[#333333]">
+                                            <ul className="p-2  text-xs">
+                                                <li className="py-2 px-2 hover:bg-gray-100 cursor-pointer">
                                                     View Order
                                                 </li>
                                                 {/* <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleStatusUpdate(item)}>Update Status</li> */}
@@ -157,7 +160,7 @@ const Page = () => {
             </table>
             <div className='flex justify-between items-center py-5 text-xs'>
                 <div>
-                    <label className='text-xs'>
+                    <label className='text-xs font-bold'>
                         Show Rows:
                         <input
                         type="number"
@@ -166,7 +169,7 @@ const Page = () => {
                         value={rowsPerPage}
                         onChange={handleRowsPerPageChange}
                         style={{ width: "50px", marginLeft: "0.5rem" }}
-                        className='text-[#6D6D6D]'
+                        className='text-[#6D6D6D] font-bold'
                         />
                     </label>
                 </div>
@@ -175,7 +178,7 @@ const Page = () => {
                         <FaArrowLeft />
                         Previous
                     </button>
-                    <span>
+                    <span className='font-bold'>
                      {currentPage} 
                     </span>
                     <button onClick={handleNext} disabled={currentPage === totalPages} className={`flex items-center gap-1 bg-[#B20021] text-white p-3 rounded-lg ${currentPage === totalPages && 'bg-opacity-10'}`}>
@@ -184,8 +187,8 @@ const Page = () => {
                     </button>
                 </div>
                 <div className='text-xs'>
-                    Showing {(currentPage - 1) * rowsPerPage + 1} to{" "}
-                    {Math.min(currentPage * rowsPerPage, totalRows)} of {totalRows} rows
+                    Showing <b>{(currentPage - 1) * rowsPerPage + 1} </b> to{" "}
+                    <b>{Math.min(currentPage * rowsPerPage, totalRows)}</b> of <b>{totalRows}</b> rows
                 </div>
             </div>
 

@@ -79,7 +79,7 @@ const Page = () => {
     
     const handleCreateModal =() => {
         setCreateModal(!createModal)
-        setModal(false)
+        // setModal(false)
     } 
 
     const handleNextModal = () => {
@@ -141,9 +141,9 @@ const Page = () => {
                 <div>
                     <button 
                         className='bg-[#2F4858] rounded-lg text-white p-3' 
-                        onClick={()=> handleModal()} 
+                        onClick={()=> handleCreateModal()} 
                     >
-                        Add New Category
+                        Add Sub-Category
                     </button>
                 </div>
             </div>
@@ -272,23 +272,28 @@ const Page = () => {
             {/* enter category name */}
             { createModal && (
                 <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[99] '>
-                    <div className='bg-white rounded-lg shadow-lg w-4/5 h-[95%] p-6 px-10 relative '>
+                    <div className='bg-white rounded-lg shadow-lg w-1/2 h-[95%] p-6 px-10 relative '>
                         <IoCloseCircleOutline onClick={()=> handleCreateModal()} size={30} className='absolute right-4 text-[#B0B0B0] cursor-pointer' />
                         <div className=' p-10 overflow-y-auto no-scrollbar h-full'>
-                            <div className='flex h-60 gap-6 '>
-                                <div className='flex items-center justify-center border-2 border-dashed rounded-lg bg-stone-100 w-1/2'>
-                                    <Image src ={uploadIcon} alt={"icon"} className='p-5'/>
-                                </div>
-                                <div className='w-1/2'>
+                            <div className=''>
+                                <div className=' text-center'>
                                     <p className='text-[#333333] font-bold text-2xl py-2 '>Create Sub- Category for “Photo”</p>
                                     <p className='text-base text-[#5D5D5D]'>Add Sub-category for the category with the pricing and image </p>
                                 </div>
-                            </div>
-                            <div className='space-y-4 flex flex-col py-4'>
-                                <label htmlFor="" className='text-[#998E8D] bg-stone-100/10 text-sm '>Sub-Category</label>
-                                <input type="text" placeholder='Enter sub-category name' className='py-3 px-2 w-1/2 border rounded' />
-                                <div>
-                                    <button className='bg-[#1C6B50] text-white rounded-lg px-4 py-3 text-sm'>Add More</button>
+                                <div className='space-y-2 flex flex-col py-2'>
+                                    <label htmlFor="" className='text-[#998E8D] bg-stone-100/10 text-sm '>Enter Sub-Category</label>
+                                    <input type="text" placeholder='Enter sub-category name' className='py-3 px-2 border rounded w-full' />
+                                </div>
+                                <div className='space-y-2 flex flex-col py-2'>
+                                    <label htmlFor="" className='text-[#998E8D] bg-stone-100/10 text-sm '>Select Sub-Category</label>
+                                    <input type="text" placeholder='Enter sub-category name' className='py-3 px-2 border rounded w-full' />
+                                </div>
+                                <div className='space-y-2 flex flex-col py-2'>
+                                    <label htmlFor="" className='text-[#998E8D] bg-stone-100/10 text-sm '>Enter Price</label>
+                                    <input type="text" placeholder='Enter sub-category name' className='py-3 px-2 border rounded w-full' />
+                                </div>
+                                <div className='flex items-center justify-center border-2 border-dashed rounded-lg bg-stone-100 py-2'>
+                                    <Image src ={uploadIcon} alt={"icon"} className='p-5'/>
                                 </div>
                             </div>
                             <div className='items-center justify-center text-white gap-4 flex py-5'>

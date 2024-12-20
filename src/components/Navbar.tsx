@@ -13,6 +13,8 @@ const Navbar = () => {
     : pathname.includes('/dashboard/account_settings/contributor') ? 'Contributor Management' 
     : pathname.includes('/dashboard/wallet') ? 'Wallet Management'  
     : pathname.includes('/dashboard/assets_management') ? 'Assets Management' 
+    : pathname.includes('/dashboard/price_management') ? 'Price Management'
+    : pathname.includes('/dashboard/transactions') ? 'Transactions' 
     : pathname.includes('/dashboard/orders') ? 'Order Management'  
     : pathname
 

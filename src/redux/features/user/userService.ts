@@ -2,15 +2,15 @@ import axiosInstance from "@/utils/utils";
 
 //fetch registered users
 const fetchRegisteredUsers = async() => {
-    const response = await axiosInstance.get('/admin/users')
-    console.log(response.data.data.data)
-    return response.data.data.data
+    const response = await axiosInstance.get('/admin/customers')
+    console.log(response.data.data)
+    return response.data.data
 };
 
 
-//singleUser
+//singleUser    
 const getSingleUser  = async(userId: unknown) => {
-    const response = await axiosInstance.get(`/admin/users/${userId}/detail`)
+    const response = await axiosInstance.get(`/admin/customers/${userId}/show`)
     console.log(response.data.data)
     return response.data.data
 };
