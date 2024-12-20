@@ -315,8 +315,8 @@ const Page = () => {
                     notify && (
                         <div className='fixed inset-0 transition-all flex items-center justify-center bg-black bg-opacity-50 z-[99]' onClick={() => {{handleCreateModal(); setNotify(false)}}}>
                             <div className='bg-white rounded-lg shadow-lg w-1/4 h-[350px] p-6 relative flex justify-center items-'>
-                                <ul className='text-center flex flex-col justify-around'>
-                                    <li className={'text-center'}><Image src={successIcon} alt='image'  /></li>
+                                <ul className='text-center flex flex-col justify-around '>
+                                    <li className={'flex justify-center'}><Image src={successIcon} alt='image'  /></li>
                                     <li>Category Created Successfully</li>
                                     <li>
                                         <button 

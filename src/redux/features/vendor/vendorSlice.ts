@@ -1,4 +1,4 @@
-import { VendorProps, VendorState } from '../../../types/types';
+import { CreateVendor, VendorProps, VendorState } from '../../../types/types';
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import vendorService from './vendorService';
 
@@ -9,7 +9,8 @@ const initialState: VendorState = {
     isError: false,
     errorMsg: "",
     vendors: [],
-    singleVendor: null
+    singleVendor: null,
+    createVendor: null
 };
 
 
@@ -35,6 +36,23 @@ export const getSingleVendor = createAsyncThunk(
     async(userId: number, thunkAPI) => {
         try {
             return await vendorService.getSingleVendor(userId)
+        }catch(error){
+            if (error instanceof Error) {  
+                return thunkAPI.rejectWithValue(error.message);
+            } else {
+            console.error("An unknown error occurred");
+            }
+        }
+    }
+);
+
+
+// createVendor
+export const createVendor = createAsyncThunk(
+    'vendor/createVendor',
+    async(userData: CreateVendor, thunkAPI) => {
+        try {
+            return await vendorService.createVendor(userData)
         }catch(error){
             if (error instanceof Error) {  
                 return thunkAPI.rejectWithValue(error.message);
@@ -80,6 +98,23 @@ const vendorSlice = createSlice({
             console.log(state.singleVendor)
         })
         .addCase(getSingleVendor.rejected, (state, {payload}:PayloadAction<unknown>) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.errorMsg = payload as string
+            console.log(state.errorMsg)
+        })
+
+
+         //createVendor
+         .addCase(createVendor.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(createVendor.fulfilled, (state, {payload}:PayloadAction<CreateVendor>) => {
+            state.isLoading = false;
+            state.createVendor = payload;
+            console.log(state.createVendor)
+        })
+        .addCase(createVendor.rejected, (state, {payload}:PayloadAction<unknown>) => {
             state.isLoading = false;
             state.isError = true;
             state.errorMsg = payload as string

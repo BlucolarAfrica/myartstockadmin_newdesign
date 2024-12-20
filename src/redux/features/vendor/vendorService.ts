@@ -1,3 +1,4 @@
+import { CreateVendor } from "@/types/types";
 import axiosInstance from "@/utils/utils";
 
 //fetch registered users
@@ -16,11 +17,19 @@ const getSingleVendor  = async(userId: unknown) => {
 };
 
 
+//singleUser
+const createVendor  = async(userData: CreateVendor) => {
+    const response = await axiosInstance.post(`/admin/vendors/store`, userData)
+    console.log(response.data.data)
+    return response.data.data
+};
+
 
 
 const vendorService = {
     fetchAllVendors,
-    getSingleVendor
+    getSingleVendor,
+    createVendor
 };
 
 export default vendorService;

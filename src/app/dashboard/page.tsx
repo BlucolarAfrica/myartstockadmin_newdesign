@@ -3,7 +3,6 @@ import icon1 from '../../../public/assets/410.png'
 import icon2 from '../../../public/assets/Mask group.png'
 import icon3 from '../../../public/assets/icon...png'
 import icon4 from '../../../public/assets/wallet-02.png'
-import { TbCurrencyNaira } from "react-icons/tb";
 import { FaNairaSign } from "react-icons/fa6";
 
 export default function Dashboard() {
