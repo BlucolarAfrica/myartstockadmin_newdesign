@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { getSingleUser } from "@/redux/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -12,6 +13,8 @@ import Image from 'next/image'
 import Loader from "@/shared/Loader";
 import { RootState } from "@/redux/store";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import OrderDetailsModal from "@/components/order/OrderDetailsModal";
+import AssignVendorModal from "@/components/order/AssignVendorModal";
 
 
 
@@ -21,7 +24,10 @@ const UserDetails = ({params}: {params: Promise<{ id: number }>}) => {
     const { id } = React.use(params)
     const router = useRouter();
     const [viewMoreBtn, setViewMoreBtn] = useState<number | null>(null);
-
+    const [selectedItem, setSelectedItem] = useState<Record<string, any> | null>(null);
+    const [assignVendorModal, setAssignVendorModal] = useState(false)
+    const [allData, setAllData] = useState<Record<string, any> | null>(null);
+    const [viewDetails, setViewDetails] = useState(false);
 
 
     useEffect(() => {
@@ -29,11 +35,33 @@ const UserDetails = ({params}: {params: Promise<{ id: number }>}) => {
         dispatch(getSingleUser(id));
     },[dispatch, id])   
 
+
+    // console.log(singleUser?.order_history)
     const toggleMenu = (id: number) => {
         setViewMoreBtn(viewMoreBtn === id ? null : id);
     };
 
-    console.log(singleUser?.orderHistory)
+    const handleViewDetail = (param: Record<string, any>,param2: Record<string, any>) =>{
+        setSelectedItem(param)
+        setAllData(param2)
+        setViewDetails(true)
+    };
+
+    const handleCloseOrderModal = () => {
+        setViewDetails(false);
+        setSelectedItem(null);
+    };
+
+     const handleAssignModal = (param: Record<string, any>,param2: Record<string, any>) =>{
+        setSelectedItem(param)
+        setAllData(param2)
+        setAssignVendorModal(true)
+    };
+
+    const handleCloseAssignModal = () => {
+        setAssignVendorModal(false);
+        setSelectedItem(null);
+    };
    
 
     if(isLoading){
@@ -125,7 +153,7 @@ const UserDetails = ({params}: {params: Promise<{ id: number }>}) => {
         <div>
             <p className="py-6 font-bold text-base text-[#333333]">Order History</p>
             <div className='px-5'>
-                <div className='overflow-x-auto'>
+                <div className=''>
                     <table className='min-w-full bg-white border border-gray-200/40'>
                         <thead>
                             <tr className="bg-gray-100/40 text-[#998E8D] font-semibold text-xs">
@@ -145,7 +173,7 @@ const UserDetails = ({params}: {params: Promise<{ id: number }>}) => {
                                 <td className='py-4 px-4 text-center'>No matching data found</td>
                             </tr>
                             : 
-                            singleUser.orderHistory?.map((item, index) => {
+                            singleUser.order_history?.map((item, index) => {
                                 return (
                                     <tr key={item.id} className='hover:bg-gray-50 text-[#333333] font-normal text-xs pb-2 hover:cursor-pointer'>
                                         <td className='py-4 px-4 border-b'>{index + 1}</td>
@@ -158,12 +186,12 @@ const UserDetails = ({params}: {params: Promise<{ id: number }>}) => {
                                         <td className='py-4 px-4 border-b relative'>
                                             <BsThreeDotsVertical onClick={ () => toggleMenu(item.id)} onMouseEnter={ () => toggleMenu(item.id)}  className='hover:cursor-pointer'/>
                                             {viewMoreBtn === item.id && (
-                                                <div onClick={ () => toggleMenu(item.id)}  onMouseLeave={ () => toggleMenu(item.id)}  className="absolute right-14 top-3 mt-1 w-32 border bg-white shadow-lg rounded-lg z-10 text-[#333333]">
+                                                <div onClick={ () => toggleMenu(item.id)}  onMouseLeave={ () => toggleMenu(item.id)}  className="absolute right-16 top-3 mt-1 w-36 border bg-white shadow-lg rounded-lg z-10 text-[#333333]">
                                                     <ul className="p-2 text-xs">
-                                                        <li className="py-2 px-2 hover:bg-gray-100 cursor-pointer">
+                                                        <li className="py-2 px-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleViewDetail(item, singleUser)}>
                                                             View Order
                                                         </li>
-                                                        {/* <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleStatusUpdate(item)}>Update Status</li> */}
+                                                        <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleAssignModal(item, singleUser)}>Assign to Vendor</li>
                                                     </ul>
                                                 </div>
                                             )}
@@ -177,6 +205,17 @@ const UserDetails = ({params}: {params: Promise<{ id: number }>}) => {
                 </div>
             </div>
         </div>
+
+        {/* view details */}
+        {viewDetails && ( <OrderDetailsModal data={selectedItem} onClose={handleCloseOrderModal} result={allData}/>)}
+
+        {/* update order status modal */}
+        {/* {updateStatusModal && (<UpdateStatus item={selectedItem} onClose={handleCloseStatusModal}/> )} */}
+
+        {/* assign vendor*/}
+        { assignVendorModal && (
+            <AssignVendorModal item={selectedItem} result={allData} onClose={handleCloseAssignModal}/>
+        )}
     </div>
   );
 };

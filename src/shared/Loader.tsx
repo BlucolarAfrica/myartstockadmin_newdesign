@@ -6,7 +6,7 @@ const Loader = () => {
   return (
     <div className='flex h-screen justify-center items-center'>
         <div className='h-20 w-20 overflow-hidden'>
-           <Image src={loaderIcon} alt='image' width={10} height={10} className='h-full w-full' />
+           <Image src={loaderIcon} alt='image' width={20} height={20} className='h-full w-full' />
         </div>
     </div>
   )

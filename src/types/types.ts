@@ -7,7 +7,7 @@ export interface AuthState {
     errorMsg: string
 }
 
-export interface orderHistory {
+export interface order {
     id: number;
     status?: string;
     delivery_fee: number;
@@ -61,20 +61,20 @@ export interface PersonalInformation {
         created_at: string;
         address?: string
     };
-    orderHistory?: orderHistory[];
+    order_history?: order[];
     total_orders?: number;
     total_amount_spent?: number;
 }
 
 export interface UserState {
-        id: number; 
-        first_name: string;
-        last_name:string;
-        email: string;
-        phone_number: string;
-        gender?: string;
-        profile_image?: string;
-        status?: boolean;
+    id: number; 
+    first_name: string;
+    last_name:string;
+    email: string;
+    phone_number: string;
+    gender?: string;
+    profile_image?: string;
+    status?: boolean;
 }
 
 export interface DataState {
@@ -237,25 +237,24 @@ export interface ContributorState {
     errorMsg?: string,
 }
 
-
 //orders
 export interface item {
     id: number,
-        category: string,
-        type: string,
-        quantity: string,
-        purchase_price: string,
-        status: string,
-        deliverable?: {
-            title: string,
-            slug: string,
-            description?: string
-        },
-        assigned_to?: {
-            name?: string,
-            personnel_name?: string,
-            type?: string
-        }
+    category: string,
+    type: string,
+    quantity: string,
+    purchase_price: string,
+    status: string,
+    deliverable?: {
+        title: string,
+        slug: string,
+        description?: string
+    },
+    assigned_to?: {
+        name?: string,
+        personnel_name?: string,
+        type?: string
+    }
 }
 export interface OrderProps { 
     sku?: string,
@@ -275,7 +274,6 @@ export interface OrderProps {
         phone_number?: string
     }
 }
-
 
 export interface OrderState {
     isLoading: boolean,

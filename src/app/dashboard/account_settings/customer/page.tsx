@@ -127,7 +127,7 @@ const Page = () => {
                                                     <Link href={`/dashboard/account_settings/customer/${user.id}`} className='block'>View More</Link>
                                                 </li>
                                                 <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer">Disable</li>
-                                                <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer">Order History</li>
+                                                {/* <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer">Order History</li> */}
                                             </ul>
                                         </div>
                                     )}

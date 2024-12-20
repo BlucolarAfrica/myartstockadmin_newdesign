@@ -102,7 +102,7 @@ const Page = ({params}: {params: Promise<{ id: number }>}) => {
                 <li className="flex items-center">Name: {" "} <b className="text-[#2F4858]"> {data.customer?.first_name} {""}{ data.customer?.last_name}</b></li>
                 <li className="flex flex-col gap-2">
                     <span>Payment Type: {data.payment_type ?? "null"}</span>
-                    <span className="flex items-center">Total Price: <b className="text-[#5420A4] flex items-center"><TbCurrencyNaira />{data.total_amount}</b></span>
+                    <span className="flex items-center">Total Price: <b className="text-[#5420A4] flex items-center"><TbCurrencyNaira />{data.total_amount?.toLocaleString()}</b></span>
                     <span className="flex items-center">Email Address: {""} <b className="flex items-center text-[#2F4858]">{" "} {data.customer?.email}</b></span>
                 </li>
             </ul>
@@ -112,7 +112,7 @@ const Page = ({params}: {params: Promise<{ id: number }>}) => {
             <ul className="flex gap-8 text-sm py-3 items-start">
                 <li className="flex items-center">Delivery Address: {" "} <b className="text-[#2F4858]"> {data.customer?.first_name} {""}{ data.customer?.last_name}</b></li>
                 <li className="flex flex-col gap-2">
-                    <span className="flex items-center">Phone: <b className="text-[#5420A4] flex items-center"><TbCurrencyNaira />{data.total_amount}</b></span>
+                    <span className="flex items-center">Phone: <b className="text-[#5420A4] flex items-center"><TbCurrencyNaira />{data.total_amount?.toLocaleString()}</b></span>
                     <span className="flex items-center">Email Address: {""} <b className="flex items-center text-[#2F4858]">{" "} {data.customer?.email}</b></span>
                 </li>
             </ul>

@@ -13,7 +13,7 @@ import { getSingleContributor } from "@/redux/features/contributor/contributorSl
 
 
 
-const ContributorDetails = ({params}: {children: React.ReactNode; params: Promise<{ id: number }>;}) => {
+const ContributorDetails = ({params}: {children?: React.ReactNode; params: Promise<{ id: number }>;}) => {
     const { id } = React.use(params)
     const {isLoading, isError, errorMsg, singleContributor:data} = useAppSelector(state => state.contributor)
     const dispatch = useAppDispatch()
@@ -69,13 +69,18 @@ const ContributorDetails = ({params}: {children: React.ReactNode; params: Promis
                     <div className="flex justify-between pt-10">
                         <div className="flex gap-2">
                             <span className="h-32 w-32 border rounded overflow-hidden">
-                                {<img src={data?.user.profile_image?? "null" } alt={"image"} className='h-full w-full'/>}
+                                {
+                                    <img src={data?.user.profile_image?? "null" } alt={"image"} className='h-full w-full'/>
+                                }
                             </span>
                             <div className="flex flex-col gap-8">
                                 <ul className="space-y-2">
                                     <li className="font-bold text-[#151515] text-2xl">{data?.user.first_name} {" "} {data?.user.last_name}</li>
                                     <li className="font-bold text-red-500 text-sm">{data?.user.contributor?.user_type ?? "null"}</li>
-                                    <li className="font-bold text-gray-500 text-sm">Referral Code: {" "}{data?.user.referral_code ?? "null"}</li>
+                                    <li className="font-bold text-gray-500 text-sm">
+                                        Referral Code: {" "}
+                                        {data?.user.referral_code ?? "null"}
+                                    </li>
                                 </ul>
                             </div>
                         </div>

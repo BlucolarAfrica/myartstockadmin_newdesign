@@ -11,6 +11,7 @@ import { CiSearch } from 'react-icons/ci';
 import { IoCloseCircleOutline } from 'react-icons/io5'
 import { LuFilter } from 'react-icons/lu';
 import successIcon from '../../../public/assets/success notice.png'
+import toast from 'react-hot-toast';
 
 interface ItemProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,7 +33,7 @@ const AssignVendorModal = ({onClose, item, result}: ItemProps) => {
 
     // const VendorName = data.find((user) => user.personnel_name)
     
-    console.log(result);
+    // console.log(result);
     console.log(item)
     
     useEffect(() => {
@@ -59,13 +60,11 @@ const AssignVendorModal = ({onClose, item, result}: ItemProps) => {
         }
     };
 
-    const handleAssignSubmit = (vendor_id:number, order_id:number, due_date:string ) => {
+    const handleAssignSubmit = (vendor_id:number | null, order_id:number, due_date:string ) => {
         dispatch(assignVendor({vendor_id, order_id, due_date}))
         setNotify(true)
         onClose()
-        alert(`Order Assigned Successfully`)
-        // console.log("duration", duration)
-        // console.log("vendor_id",selectedVendorId)
+        toast.success("Order Assigned Successfully")
     }
 
     
@@ -80,7 +79,7 @@ const AssignVendorModal = ({onClose, item, result}: ItemProps) => {
 
   return (
     <div className='fixed inset-0 transition-all flex items-center justify-center bg-black bg-opacity-50 z-[99]'>
-        <div className='bg-white rounded-lg shadow-lg w-5/6  h-[95%] p-8  relative '>
+        <div className='bg-white rounded-lg shadow-lg w-[85%]  h-[95%] p-8  relative overflow-y-auto'>
             <IoCloseCircleOutline onClick={onClose} size={30} className='absolute right-4 text-[#B0B0B0] cursor-pointer' />
             <div className="overflow-y-auto">
                 <div>
@@ -129,7 +128,7 @@ const AssignVendorModal = ({onClose, item, result}: ItemProps) => {
                         data.map((user) => {
                             return (
                                 <tr key={user.id} className='hover:bg-gray-50 text-[#333333] font-normal text-xs'>
-                                    <td className='py-2 px-4 border-b'>
+                                    <td className='py-3 px-4 border-b'>
                                         <input
                                             type="radio"
                                             name="user"
@@ -207,7 +206,7 @@ const AssignVendorModal = ({onClose, item, result}: ItemProps) => {
                         <div className='bg-white rounded-lg shadow-lg w-1/4 h-[350px] p-6 relative flex justify-center items-'>
                             <ul className='text-center flex flex-col justify-around'>
                                 <li><Image src={successIcon} alt='image'  /></li>
-                                <li>Order Assigned to {vendorName}</li>
+                                <li>Order Assigned to </li>
                                 <li>
                                     <button 
                                         onClick={
