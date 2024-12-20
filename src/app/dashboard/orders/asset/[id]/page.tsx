@@ -130,7 +130,7 @@ const Page = ({params}: {params: Promise<{ id: number }>}) => {
                     <th className="py-4 px-4 text-left border-b">Product</th>
                     <th className="py-4 px-4 text-left border-b">Type</th>
                     <th className="py-4 px-4 text-left border-b">Quantity</th>
-                    <th className="py-4 px-4 text-left border-b">Price</th>
+                    <th className="py-4 px-4 text-left border-b flex items-center">Price(<TbCurrencyNaira />)</th>
                     <th className="py-4 px-4 text-left border-b">Vendor Assigned</th>
                     <th className="py-4 px-4 text-left border-b">Status</th>
                     <th className="py-4 px-4 text-left border-b">Action</th>
@@ -145,14 +145,14 @@ const Page = ({params}: {params: Promise<{ id: number }>}) => {
                 data?.items?.map((item, index) => {
                     return (
                         <tr key={index} className='hover:bg-gray-50 text-[#333333] font-normal text-xs'>
-                            <td className='py-2 px-4 border-b'>{index + 1}</td>
-                            <td className='py-2 px-4 border-b flex items-center text-[#5420A4]'>{item.deliverable?.title}</td>
-                            <td className='py-2 px-4 border-b'>{item.type ?? "null"}</td>
-                            <td className='py-2 px-4 border-b text-[#5420A4]'>{item.quantity ?? "null"}</td>
-                            <td className='py-2 px-4 border-b text-[#5420A4] flex items-center'><TbCurrencyNaira />{item.purchase_price ?? "null"}</td>
-                            <td className='py-2 px-4 border-b '>{item.assigned_to?.personnel_name}</td>
-                            <td className='py-2 px-4 border-b'>{item.status ?? "null"}</td>
-                            <td className='py-2 px-4 border-b relative'>
+                            <td className='py-4 px-4 border-b'>{index + 1}</td>
+                            <td className='py-4 px-4 border-b flex items-center text-[#5420A4]'>{item.deliverable?.title}</td>
+                            <td className='py-4 px-4 border-b'>{item.type ?? "null"}</td>
+                            <td className='py-4 px-4 border-b text-[#5420A4]'>{item.quantity ?? "null"}</td>
+                            <td className='py-4 px-4 border-b text-[#5420A4]'>{item.purchase_price.toLocaleString() ?? "null"}</td>
+                            <td className='py-4 px-4 border-b '>{item.assigned_to?.personnel_name}</td>
+                            <td className='py-4 px-4 border-b'>{item.status ?? "null"}</td>
+                            <td className='py-4 px-4 border-b relative'>
                                 <BsThreeDotsVertical onClick={ () => toggleMenu(item.id)}  className='cursor-pointer'/>
                                 {viewMoreBtn === item.id && (
                                     <div className="absolute right-24 top-2 mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333] border" onClick={() => toggleMenu(item.id)} onMouseLeave={ () => toggleMenu(item.id)}>

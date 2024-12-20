@@ -1,24 +1,25 @@
 'use client'
-import { fetchRegisteredUsers } from '@/redux/features/user/userSlice'
+
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { truncateText } from '@/utils/utils'
+import { highlightMatch, truncateText } from '@/utils/utils'
 import React, { useEffect, useState } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { CiSearch } from 'react-icons/ci'
 import { LuFilter } from 'react-icons/lu';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import profileImage from '../../../../../public/assets/profile-image.png'
-import Image from 'next/image'
 import Link from 'next/link'
 import Loader from '@/shared/Loader'
+import { fetchContributor } from '@/redux/features/contributor/contributorSlice'
+import { useRouter } from 'next/navigation'
 
 const Page = () => {
-    const {isLoading, isError, users:data, errorMsg} = useAppSelector(state => state.user);
+    const {isLoading, isError, contributors:data, errorMsg} = useAppSelector(state => state.contributor);
     const dispatch = useAppDispatch();
     const [viewMoreBtn, setviewMoreBtn] = useState<number | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
+    const router = useRouter()
 
     
     const toggleMenu = (id: number) => {
@@ -26,7 +27,7 @@ const Page = () => {
     };
 
     useEffect(() => {
-      dispatch(fetchRegisteredUsers())
+      dispatch(fetchContributor())
     },[dispatch])
 
     if(isLoading){
@@ -54,12 +55,16 @@ const Page = () => {
     };
 
 
+    // console.log(displayData);
+
     // Filtered Data
     const filteredData = displayData.filter((item) =>
-        item.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchQuery.toLowerCase())
+       item?.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        // item?.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item?.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    // console.log(filteredData)
 
     const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = Math.max(1, Math.min(100, Number(event.target.value)));
@@ -105,20 +110,20 @@ const Page = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    { !filteredData && !isLoading?
-                    <tr className='py-5 font-bold text-[#333333]'>
+                    { !filteredData.length && !isLoading?
+                    <tr className='py-5 font-bold text-[#333333] '>
                         <td className='py-4 px-4 text-center'>No matching data found</td>
                     </tr> 
                     :
                     filteredData.map((user, index) => {
                         return (
-                            <tr key={user.id} className='hover:bg-gray-50 text-[#333333] font-normal text-xs'>
+                            <tr key={user.id} className='hover:bg-gray-50 text-[#333333] font-normal text-xs cursor-pointer' onClick={() => router.push(`/dashboard/account_settings/contributor/${user.contributor.id}`)}>
                                 <td className='py-2 px-4 border-b'>{index + 1}</td>
-                                <td className='py-2 px-4 border-b flex items-center'>{user.profile_image? `${user.profile_image}` : <Image src={profileImage} alt='image' className='rounded-full w-10 h-10 object-cover' quality={100} />}</td>
-                                <td className='py-2 px-4 border-b'>{user.first_name} {user.last_name}</td>
-                                <td className='py-2 px-4 border-b'>{user.gender ? user.gender : "null"}</td>
+                                <td className='py-2 px-4 border-b flex items-center'>{<img src={user.profile_image ?? "null" } alt={"image"} className='h-10 w-10 rounded-full'/>} </td>
+                                <td className='py-2 px-4 border-b'>{highlightMatch(user.first_name, searchQuery) } {highlightMatch(user.last_name, searchQuery) }</td>
+                                <td className='py-2 px-4 border-b'>{user.gender ??  "null"}</td>
                                 <td className='py-2 px-4 border-b'>{truncateText(user.email, 10)}</td>
-                                <td className='py-2 px-4 border-b'>{user.phone_number ? user.phone_number : "null"}</td>
+                                <td className='py-2 px-4 border-b'>{user.phone_number ?? "null"}</td>
                                 <td className='py-2 px-4 border-b'>{user.is_active === true? <span className='bg-[#06D6A00D] rounded-lg px-2 py-1 text-xs text-[#2F4858]'>Active</span> : <span className='bg-[#F99E0B40] text-orange rounded-lg px-2 py-1 text-xs text-[#F99E0B]'>In-Active</span> }</td>
                                 <td className='py-2 px-4 border-b relative'>
                                     <BsThreeDotsVertical onClick={ () => toggleMenu(user.id)}  className='cursor-pointer'/>
@@ -126,7 +131,7 @@ const Page = () => {
                                         <div className="absolute right-5 mt-2 w-40 bg-white shadow-lg rounded-lg z-10 text-[#333333]" onClick={ () => toggleMenu(user.id)}>
                                             <ul className="p-2 text-xs">
                                                 <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer">
-                                                    <Link href={`/dashboard/account_settings/contributor/${user.id}`}>View More</Link>
+                                                    <Link href={`/dashboard/account_settings/contributor/${user.contributor.id}`}>View More</Link>
                                                 </li>
                                                 <li className="py-1 px-2 hover:bg-gray-100 cursor-pointer">Disable</li>
                                             </ul>
@@ -139,9 +144,9 @@ const Page = () => {
                 }
                 </tbody>
             </table>
-            <div className='flex justify-between items-center py-5 text-sm'>
+            <div className='flex justify-between items-center py-5 text-xs'>
                 <div>
-                    <label className='text-xs'>
+                    <label className='text-xs font-bold'>
                         Show Rows:
                         <input
                         type="number"
@@ -150,7 +155,7 @@ const Page = () => {
                         value={rowsPerPage}
                         onChange={handleRowsPerPageChange}
                         style={{ width: "50px", marginLeft: "0.5rem" }}
-                        className='text-[#6D6D6D]'
+                        className='text-[#6D6D6D] font-bold'
                         />
                     </label>
                 </div>
@@ -159,7 +164,7 @@ const Page = () => {
                         <FaArrowLeft />
                         Previous
                     </button>
-                    <span>
+                    <span className='font-bold'>
                      {currentPage} 
                     </span>
                     <button onClick={handleNext} disabled={currentPage === totalPages} className={`flex items-center gap-1 bg-[#B20021] text-white p-3 rounded-lg ${currentPage === totalPages && 'bg-opacity-10'}`}>
@@ -168,8 +173,8 @@ const Page = () => {
                     </button>
                 </div>
                 <div className='text-xs'>
-                    Showing {(currentPage - 1) * rowsPerPage + 1} to{" "}
-                    {Math.min(currentPage * rowsPerPage, totalRows)} of {totalRows} rows
+                    Showing <b>{(currentPage - 1) * rowsPerPage + 1} </b> to{" "}
+                    <b>{Math.min(currentPage * rowsPerPage, totalRows)}</b> of <b>{totalRows}</b> rows
                 </div>
             </div>
         </div>
